@@ -8,5 +8,6 @@ setup(
     , packages=['bitsows']
     , url='https://github.com/oxsoftdev/bitsoapi'
     , license='LICENSE.txt'
+    , install_requires=['tornado']
 )
 
