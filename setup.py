@@ -6,7 +6,7 @@ setup(
     , author='sebastian'
     , author_email='oxsoftdev@gmail.com'
     , packages=find_packages()
-    , url='https://github.com/oxsoftdev/bitsoapi'
+    , url='https://github.com/oxsoftdev/bitsows'
     , license='LICENSE.txt'
     , install_requires=['tornado']
 )
