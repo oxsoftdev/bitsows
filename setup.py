@@ -9,5 +9,8 @@ setup(
     , url='https://github.com/oxsoftdev/bitsows'
     , license='LICENSE.txt'
     , install_requires=['tornado']
+    , dependency_links=[
+        'https://github.com/oxsoftdev/design-patterns-py/tarball/master'
+    ]
 )
 
