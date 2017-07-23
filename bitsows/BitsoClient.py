@@ -12,11 +12,11 @@ logger = logging.getLogger('bitsows')
 
 class BitsoClient(pubsub.AbsPublisher):
 
-    def __init__(self, ):
+    def __init__(self, books):
         self._ws_client = None
         self._ws_url = 'wss://ws.bitso.com'
         self._channels = ['diff-orders', 'trades', 'orders']
-        self._books = ['btc_mxn', 'eth_mxn', 'xrp_btc', 'xrp_mxn', 'eth_btc']
+        self._books = books
 
     @tornado.gen.coroutine
     def connect(self):
@@ -60,4 +60,3 @@ class BitsoClient(pubsub.AbsPublisher):
                     'book': book,
                     'type': channel
                 }))
-
