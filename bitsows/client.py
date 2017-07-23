@@ -2,15 +2,15 @@ import json
 import logging
 import tornado.gen
 import tornado.websocket
+from dppy.behavioral import pubsub
 
-from .abstracts.pubsub import AbsPublisher
 from .models import StreamUpdate
 
 
 logger = logging.getLogger('bitsows')
 
 
-class BitsoClient(AbsPublisher):
+class BitsoClient(pubsub.AbsPublisher):
 
     def __init__(self, ):
         self._ws_client = None
