@@ -1,1 +1,2 @@
-from .BitsoClient import BitsoClient
+from .Client import Client
+

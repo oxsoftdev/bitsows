@@ -10,7 +10,7 @@ from .models import StreamUpdate
 logger = logging.getLogger('bitsows')
 
 
-class BitsoClient(pubsub.AbsPublisher):
+class Client(pubsub.AbsPublisher):
 
     def __init__(self, books):
         self._ws_client = None
@@ -60,3 +60,4 @@ class BitsoClient(pubsub.AbsPublisher):
                     'book': book,
                     'type': channel
                 }))
+
