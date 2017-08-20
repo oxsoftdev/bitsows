@@ -1,16 +1,16 @@
 from decimal import Decimal
-from datetime import datetime
 
 from ._BaseModel import BaseModel
 
 
-class OrderUpdate(BaseModel):
+class Order(BaseModel):
 
-    def __init__(self, _timestamp, book, **kwargs):
-        self._timestamp = _timestamp
-        self._datetime = datetime.fromtimestamp(self._timestamp)
+    def __init__(self, timestamp, datetime, book, data):
+        self._timestamp = timestamp
+        self._datetime = datetime
         self.book = book
-        for (param, value) in kwargs.items():
+
+        for (param, value) in data.items():
             if param == 'r':
                 setattr(self, 'rate', Decimal(str(value)))
             elif param == 'a':
@@ -27,9 +27,9 @@ class OrderUpdate(BaseModel):
                 setattr(self, 'timestamp', value)
                 setattr(self, 'datetime', datetime.fromtimestamp(value))
 
-    def __str__(self):
-        return "OrderUpdate({OrderUpdate})".format(
-            OrderUpdate=self._repr(
+    def __repr__(self):
+        return "Order({Order})".format(
+            Order=self._repr(
                 'timestamp', 'book', 'type', 'rate', 'amount', 'value'
             )
         )
