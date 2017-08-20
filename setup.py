@@ -8,9 +8,12 @@ setup(
     , packages=find_packages()
     , url='https://github.com/oxsoftdev/bitsows'
     , license='LICENSE.txt'
-    , install_requires=['tornado']
+    , install_requires=[
+        'dppy'
+        , 'tornado'
+    ]
     , dependency_links=[
-        'https://github.com/oxsoftdev/design-patterns-py/tarball/master'
+        'https://github.com/oxsoftdev/dppy/tarball/master#egg=dppy-0.1'
     ]
 )
 
