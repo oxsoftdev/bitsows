@@ -2,9 +2,11 @@ import json
 import logging
 import tornado.gen
 import tornado.websocket
+from datetime import datetime
 from dppy.behavioral import pubsub
+from time import time
 
-from .models import StreamUpdate
+from .models import Stream
 
 
 logger = logging.getLogger('bitsows')
@@ -13,8 +15,8 @@ logger = logging.getLogger('bitsows')
 class Client(pubsub.AbsPublisher):
 
     def __init__(self, books):
-        self._ws_client = None
-        self._ws_url = 'wss://ws.bitso.com'
+        self._conn = None
+        self._url = 'wss://ws.bitso.com'
         self._channels = ['diff-orders', 'trades', 'orders']
         self._books = books
 
@@ -23,7 +25,7 @@ class Client(pubsub.AbsPublisher):
         logger.info("connecting")
         try:
             websocket_connect = tornado.websocket.websocket_connect
-            self._ws_client = yield websocket_connect(self._ws_url)
+            self._conn = yield websocket_connect(self._url)
             self.subscribe()
         except:
             logger.exception("failed to connect")
@@ -35,17 +37,23 @@ class Client(pubsub.AbsPublisher):
     def listen(self):
         while True:
             try:
-                msg = yield self._ws_client.read_message()
+                msg = yield self._conn.read_message()
                 if msg is None:
                     logger.info("connection closed")
-                    self._ws_client = None
+                    self._conn = None
                     break
                 else:
-                    _json = json.loads(msg)
-                    if (isinstance(_json, dict) and 'payload' in _json):
-                        self.notify(StreamUpdate(_json))
+                    data = json.loads(msg)
+                    if (isinstance(data, dict) and 'payload' in data):
+                        timestamp = time()
+                        params = {
+                            'timestamp': timestamp,
+                            'datetime': datetime.fromtimestamp(timestamp),
+                            'data': data
+                        }
+                        self.notify(Stream(**params))
                     else:
-                        logger.info(msg)
+                        logger.info(data)
             except:
                 logger.exception("failed on listen")
                 raise
@@ -55,7 +63,7 @@ class Client(pubsub.AbsPublisher):
             for book in self._books:
                 logger.info("subscribing(channel=%s,book=%s)" %
                             (channel, book))
-                self._ws_client.write_message(json.dumps({
+                self._conn.write_message(json.dumps({
                     'action': 'subscribe',
                     'book': book,
                     'type': channel
