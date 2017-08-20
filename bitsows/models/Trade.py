@@ -1,18 +1,18 @@
 from decimal import Decimal
-from datetime import datetime
 
 from ._BaseModel import BaseModel
 
 
-class TradeUpdate(BaseModel):
+class Trade(BaseModel):
 
-    def __init__(self, _timestamp, book, **kwargs):
-        self._timestamp = _timestamp
-        self._datetime = datetime.fromtimestamp(self._timestamp)
+    def __init__(self, timestamp, datetime, book, data):
+        self._timestamp = timestamp
+        self._datetime = datetime
         self.book = book
-        for (param, value) in kwargs.items():
+
+        for (param, value) in data.items():
             if param == 'i':
-                setattr(self, 'tid', int(value))
+                setattr(self, 'tid', int(str(value)))
             elif param == 'a':
                 setattr(self, 'amount', Decimal(str(value)))
             elif param == 'r':
@@ -30,6 +30,7 @@ class TradeUpdate(BaseModel):
                 setattr(self, 'taker_order_id', value)
 
     def __repr__(self):
-        return "TradeUpdate({TradeUpdate})".format(
-            TradeUpdate=self._repr('book','tid','rate','amount','value')
+        return "Trade({Trade})".format(
+            Trade=self._repr('book','tid','rate','amount','value')
         )
+
