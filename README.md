@@ -3,7 +3,7 @@ bitso websocket client
 
 ## install
 ```
-pip3 install --user https://github.com/oxsoftdev/bitsows/tarball/master
+pip3 install --process-dependency-links --user https://github.com/oxsoftdev/bitsows/tarball/master
 ```
 
 ## enable logging
